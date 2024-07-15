@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { api } from "../../lib/axios";
+import { api } from "../../../lib/axios";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CircleCheck } from "lucide-react";

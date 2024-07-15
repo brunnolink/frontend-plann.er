@@ -1,5 +1,5 @@
 import { Mail, User, X } from "lucide-react";
-import { Button } from "../../components/button";
+import { Button } from "../../../components/button";
 import { format } from "date-fns";
 
 interface GuestsModalProps {

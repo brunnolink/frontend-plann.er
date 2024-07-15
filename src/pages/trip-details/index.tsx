@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CreateActivityModal } from "./create-activity-modal";
-import { ImportantLinks } from "./important-links";
-import { Guests } from "./guests";
-import { Activities } from "./activities";
-import { DestinationAndDateHeader } from "./destination-and-date-header";
+import { CreateActivityModal } from "./activity/create-activity-modal";
+import { ImportantLinks } from "./links/important-links";
+import { Guests } from "./guests/guests";
+import { Activities } from "./activity/activities";
+import { DestinationAndDateHeader } from "./header/destination-and-date-header";
 import { Button } from "../../components/button";
-import { GuestsModal } from "./guests-modal-invite";
+import { GuestsModal } from "./guests/guests-modal-invite";
 import { useParams } from "react-router-dom";
 import { api } from "../../lib/axios";
 
