@@ -43,6 +43,14 @@ export function Activities() {
             groupedActivities[weekday].push(activity);
         });
 
+        Object.keys(groupedActivities).forEach(weekday => {
+            groupedActivities[weekday].sort((a, b) => {
+                const dateA = parseISO(a.occurs_at);
+                const dateB = parseISO(b.occurs_at);
+                return dateA.getTime() - dateB.getTime();
+            });
+        });
+
         return groupedActivities;
     };
 
