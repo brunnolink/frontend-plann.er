@@ -8,10 +8,15 @@ interface Participant {
     id: string,
     name: string | null,
     email: string,
-    isConfirmed: boolean
+    isConfirmed: boolean,
+    
 }
 
-export function Guests() {
+interface GuestsProps {
+    openGuestsInviteModal: () => void
+}
+
+export function Guests({openGuestsInviteModal}: GuestsProps) {
 
     const { tripId } = useParams()
     const [ participants, setParticipants ] = useState<Participant[]>([]);
@@ -57,7 +62,8 @@ export function Guests() {
                
             </div>
 
-            <Button 
+            <Button
+            onClick={openGuestsInviteModal} 
             variant="secondary"> 
                  <UserCog className='size-5' />
                 Gerenciar convidados
