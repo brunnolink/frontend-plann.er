@@ -131,7 +131,8 @@ export function CreateTripPage() {
         openGuestsInput={openGuestsInput}
         setDestination={setDestination}
         range={range}
-        setRange={setRange}/>
+        setRange={setRange}
+        destination={destination}/>
 
           {isGuestsInputOpen && (
            <InviteGuestStep 
@@ -165,7 +166,9 @@ export function CreateTripPage() {
         closeConfirmTripModal={closeConfirmTripModal}
         createTrip={createTrip}
         setOwnerName={setOwnerName}
-        setOwnerEmail={setOwnerEmail}/>
+        setOwnerEmail={setOwnerEmail}
+        destination={destination}
+        range={range}/>
       )}
     </div>
   )

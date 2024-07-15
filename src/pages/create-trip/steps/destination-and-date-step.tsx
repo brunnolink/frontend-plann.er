@@ -7,7 +7,8 @@ import { format } from 'date-fns'
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean;
-  range: DateRange | undefined
+  range: DateRange | undefined;
+  destination: string;
   closeGuestsInput: () => void;
   openGuestsInput: () => void;
   setDestination: (destination: string) => void;
@@ -19,6 +20,7 @@ export function DestinationAndDateStep({
   closeGuestsInput,
   openGuestsInput,
   setDestination,
+  destination,
   setRange,
   range,
 }: DestinationAndDateStepProps) {
