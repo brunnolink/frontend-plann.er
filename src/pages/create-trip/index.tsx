@@ -4,6 +4,8 @@ import { InviteGuestsModal } from './invite-guests-modal';
 import { ConfirmTripModal } from './confirm-trip-modal';
 import { DestinationAndDateStep } from './steps/destination-and-date-step';
 import { InviteGuestStep } from './steps/invite-guest-step';
+import { DateRange } from 'react-day-picker';
+import { api } from '../../lib/axios';
 
 export function CreateTripPage() {
   const navigate = useNavigate();
@@ -11,6 +13,11 @@ export function CreateTripPage() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
+
+  const [destination, setDestination] = useState('');
+  const [ownerName, setOwnerName] = useState('');
+  const [ownerEmail, setOwnerEmail] = useState('');
+  const [range, setRange] = useState<DateRange | undefined>();
 
   const [emailsToInvite, setEmailsToInvite] = useState(['']);
 
@@ -37,10 +44,43 @@ export function CreateTripPage() {
     setIsConfirmTripModalOpen(false)
   }
 
-  function createTrip(event: FormEvent<HTMLFormElement>) {
+  async function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     
-    navigate('/trips/123')
+    console.log(range)
+    console.log(destination)
+    console.log(ownerName)
+    console.log(ownerEmail)
+    console.log(emailsToInvite)
+    
+    if(!destination) {
+      return
+    }
+
+    if(!range?.from || !range?.to ) {
+      return
+    }
+
+    if(emailsToInvite.length === 0) {
+      return 
+    }
+    
+    if(!ownerName || !ownerEmail) {
+      return
+    }
+    
+    const response = await api.post('/trips', {
+      destination,
+      starts_at: range.from,
+      ends_at: range.to,
+      emails_to_invite: emailsToInvite,
+      owner_name: ownerName,
+      owner_email: ownerEmail
+    })
+    
+    const { tripId } = response.data
+    
+    navigate(`/trips/${tripId}`)
   }
 
   function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
@@ -88,13 +128,17 @@ export function CreateTripPage() {
         <DestinationAndDateStep
         isGuestsInputOpen={isGuestsInputOpen}
         closeGuestsInput={closeGuestsInput}
-        openGuestsInput={openGuestsInput}/>
+        openGuestsInput={openGuestsInput}
+        setDestination={setDestination}
+        range={range}
+        setRange={setRange}/>
 
           {isGuestsInputOpen && (
            <InviteGuestStep 
            openConfirmTripModal={openConfirmTripModal}
            emailsToInvite={emailsToInvite}
            openGuestsModal={openGuestsModal}
+           
            />
            )}
         </div>
@@ -119,7 +163,9 @@ export function CreateTripPage() {
       {isConfirmTripModalOpen && (
         <ConfirmTripModal 
         closeConfirmTripModal={closeConfirmTripModal}
-        createTrip={createTrip}/>
+        createTrip={createTrip}
+        setOwnerName={setOwnerName}
+        setOwnerEmail={setOwnerEmail}/>
       )}
     </div>
   )
