@@ -10,6 +10,7 @@ import { GuestsModal } from "./guests/guests-modal-invite";
 import { useParams } from "react-router-dom";
 import { api } from "../../lib/axios";
 
+
 interface Trip {
     id: string;
     destination: string;
@@ -18,13 +19,15 @@ interface Trip {
     isConfirmed: boolean;
 }
 
+
+
 export function TripDetailsPage() {
     const { tripId } = useParams<{ tripId: string }>();
     const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] = useState(false);
     const [isGuestsInviteModalOpen, setIsGuestsInviteModalOpen] = useState(false);
-    const [ownerName, setOwnerName] = useState('');
-    const [ownerEmail, setOwnerEmail] = useState('');
     const [trip, setTrip] = useState<Trip | undefined>();
+ 
+
 
     useEffect(() => {
         api.get(`/trips/${tripId}`).then(response => {
@@ -32,6 +35,7 @@ export function TripDetailsPage() {
         }).catch(error => {
             console.error('Error fetching trip details:', error);
         });
+
     }, [tripId]);
 
     function openCreateActivityModal() {
@@ -47,6 +51,7 @@ export function TripDetailsPage() {
     function closeGuestsInviteModal() {
         setIsGuestsInviteModalOpen(false);
     }
+
 
     
     return (
@@ -96,10 +101,10 @@ export function TripDetailsPage() {
                     destination={trip?.destination}
                     startsAt={trip?.startsAt}
                     endsAt={trip?.endsAt}
-                    setOwnerName={setOwnerName}
-                    setOwnerEmail={setOwnerEmail}
                     closeGuestsInviteModal={closeGuestsInviteModal} />
             )}
+
+              
         </div>
     )
 }

@@ -1,37 +1,60 @@
 import { Mail, User, X } from "lucide-react";
 import { Button } from "../../../components/button";
 import { format } from "date-fns";
+import { FormEvent } from "react";
+import { api } from "../../../lib/axios";
+import { useParams } from "react-router-dom";
 
 interface GuestsModalProps {
     closeGuestsInviteModal: () => void;
-    setOwnerName: (name: string) => void;
-    setOwnerEmail: (email: string) => void;
     destination?: string;
     startsAt?: string;
-    endsAt?: string;
+    endsAt?: string; 
+
 }
 
 export function GuestsModal ({
     closeGuestsInviteModal, 
-    setOwnerName,
-    setOwnerEmail,
     destination,
     startsAt,
-    endsAt
+    endsAt,
+ 
     }: GuestsModalProps) {
+      
+     
+    const { tripId } = useParams();
+      
 
       const formattedDateRange = startsAt && endsAt
         ? `${format(startsAt, "dd/MM/yyyy")} até ${format(endsAt, "dd/MM/yyyy")}`
         : '';
         
+        
+
+        async function inviteGuests(event: FormEvent<HTMLFormElement>) {
+          event.preventDefault();
+  
+          const data = new FormData(event.currentTarget)
+  
+          const name = data.get('name')?.toString()
+          const email = data.get('email')?.valueOf()
+          
+          await api.post(`/trips/${tripId}/invite`, {
+            name,
+            email,
+          })
+  
+          window.document.location.reload();
+      }
+
     return (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center'>
         <div className='w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5'>
           <div className='space-y-2'>
             <div className='flex items-center justify-between'>
 
-              <h2 className='text-lg font-semibold'>Confirmar participação</h2>
-              <button type='submit' onClick={closeGuestsInviteModal}>
+              <h2 className='text-lg font-semibold'>Convidar participantes</h2>
+              <button type='button' onClick={closeGuestsInviteModal}>
                 <X 
                 className='size-5 text-zinc-400' />
               </button>
@@ -45,7 +68,8 @@ export function GuestsModal ({
                     </p>
           </div>
 
-          <form 
+          <form
+           onSubmit={inviteGuests} 
            className='space-y-3'>
 
             <div className='h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2'>
@@ -56,10 +80,7 @@ export function GuestsModal ({
                 type="text" 
                 name='name' 
                 placeholder="Seu nome completo"
-                className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-                onChange={event => setOwnerName(event.target.value)} />
-
-              
+                className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"/>
 
             </div>
 
@@ -71,12 +92,13 @@ export function GuestsModal ({
                 name='email' 
                 placeholder="Seu e-mail pessoal"
                 className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" 
-                onChange={event => setOwnerEmail(event.target.value)} />
+                />
                 
             </div>
 
-            <Button type="submit" size="full">
-             Confirmar minha presença
+            <Button
+             size="full">
+             Convidar participante
             </Button>
           </form>
         </div>
